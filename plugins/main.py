@@ -9,7 +9,7 @@ from pyrogram.errors.exceptions.bad_request_400 import ChatAdminRequired, UserAd
 @Client.on_message(filters.incoming & ~filters.private & filters.command(['inkick']))
 def inkick(client, message):
   user = client.get_chat_member(message.chat.id, message.from_user.id)
-  if user.status == "creator":
+  if user.status in ('administrator', 'creator'):
     if len(message.command) > 1:
       input_str = message.command
       sent_message = message.reply_text(Messages.START_KICK)
@@ -40,7 +40,7 @@ def inkick(client, message):
 @Client.on_message(filters.incoming & ~filters.private & filters.command(['dkick']))
 def dkick(client, message):
   user = client.get_chat_member(message.chat.id, message.from_user.id)
-  if user.status == "creator":
+  if user.status in ('administrator', 'creator'):
     sent_message = message.reply_text(Messages.START_KICK)
     count = 0
     for member in client.iter_chat_members(message.chat.id):
